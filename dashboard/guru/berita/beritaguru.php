@@ -1,3 +1,30 @@
+<?php
+include "../../../koneksi/koneksi.php";
+
+$kategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
+$q = isset($_GET['q']) ? $_GET['q'] : '';
+
+$where = [];
+
+if (!empty($kategori)) {
+  $kategori = mysqli_real_escape_string($conn, $kategori);
+  $where[] = "kategori = '$kategori'";
+}
+if (!empty($q)) {
+  $q = mysqli_real_escape_string($conn, $q);
+  $where[] = "(judul LIKE '%$q%' OR subjudul LIKE '%$q%')";
+}
+
+$whereClause = '';
+if (count($where) > 0) {
+  $whereClause = "WHERE " . implode(" AND ", $where);
+}
+
+$query = "SELECT * FROM berita $whereClause ORDER BY tanggal DESC";
+$result = mysqli_query($conn, $query);
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -27,40 +54,46 @@
 
       <!-- Search -->
       <div class="search-container">
-        <form action="beritaguru.php" method="GET">
+       <form action="beritaguru.php" method="GET">
+          <input type="hidden" name="kategori" value="<?= isset($_GET['kategori']) ? htmlspecialchars($_GET['kategori']) : '' ?>">
           <div class="search-bar">
             <span class="search-icon">🔍</span>
-            <input type="text" name="q" placeholder="Cari berita">
+            <input type="text" name="q" placeholder="Cari berita" value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>">
           </div>
           <button type="submit" class="btn-cari">Cari</button>
           <a href="tambahberita.php" class="btn-tambah">+</a>
-        </form>
+       </form>
       </div>
 
       <!-- Filter -->
+     <?php $q = isset($_GET['q']) ? $_GET['q'] : ''; ?>
       <div class="filter-buttons">
-        <button>Kegiatan</button>
-        <button>Lomba</button>
-        <button>Prestasi</button>
-        <button>Ekstrakurikuler</button>
+        <a href="beritaguru.php?kategori=Kegiatan&q=<?= urlencode($q) ?>"><button>Kegiatan</button></a>
+        <a href="beritaguru.php?kategori=Lomba&q=<?= urlencode($q) ?>"><button>Lomba</button></a>
+        <a href="beritaguru.php?kategori=Prestasi&q=<?= urlencode($q) ?>"><button>Prestasi</button></a>
+        <a href="beritaguru.php?kategori=Ekstrakurikuler&q=<?= urlencode($q) ?>"><button>Ekstrakurikuler</button></a>
+        <a href="beritaguru.php"><button>Semua</button></a>
       </div>
+
 
       <!-- Berita -->
       <h2>Berita terbaru</h2>
       <div class="berita-grid">
-        <!-- Ulangi div ini untuk menambahkan berita -->
-        <div class="berita-card"><div class="image"></div></div>
-        <div class="berita-card"><div class="image"></div></div>
-        <div class="berita-card"><div class="image"></div></div>
-        <div class="berita-card"><div class="image"></div></div>
-        <div class="berita-card"><div class="image"></div></div>
-        <div class="berita-card"><div class="image"></div></div>
-        <div class="berita-card"><div class="image"></div></div>
-        <div class="berita-card"><div class="image"></div></div>
-        <div class="berita-card"><div class="image"></div></div>
+        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+          <div class="berita-card">
+            <a href="isiberita.php?ID_BERITA=<?= $row['ID_BERITA'] ?>">
+              <div class="berita-gambar">
+                <img src="fotoberita/<?= $row['gambar'] ?>" alt="<?= $row['judul'] ?>">
+              </div>
+              <div class="berita-info">
+                <h3><?= $row['judul'] ?></h3>
+              </div>
+            </a>
+          </div>
+        <?php endwhile; ?>
       </div>
-    </main>
-  </div>
 
+
+        
 </body>
 </html>

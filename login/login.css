@@ -59,7 +59,7 @@ body {
   color: black;
 }
 
-.login-box input[type="text"],
+.login-box input[type="email"],
 .login-box input[type="password"],
 .login-box select {
   width: 93%;

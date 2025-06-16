@@ -1,0 +1,50 @@
+/* Tampilan Umum */
+body {
+  background: #000;
+  color: white;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 40px;
+  position: relative;
+}
+
+h2 {
+  margin-bottom: 40px;
+  font-size: 2.7rem;
+}
+
+.thumbnail {
+  width: 800px;
+  height: 500px;
+  background: #ccc;
+  border-radius: 10px;
+  margin: 0 auto 20px;
+}
+
+.isi-berita {
+  width: 80%;
+  margin: 0 auto;
+  color: #ccc;
+  font-size: 2rem;
+}
+
+.kembali {
+  display: inline-block;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  margin-right: 70cap;
+  margin-top: 20px;
+  font-size: 1.6rem;
+}
+
+.pinjam {
+  
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #000;
+  font-weight: bold;
+  margin-left: 70cap;
+  margin-top: 0;
+  font-size: 1.6rem;
+}

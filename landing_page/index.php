@@ -1,3 +1,6 @@
+<?php
+session_start(); // Wajib ada sebelum output HTML
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -14,12 +17,36 @@
       <img class="logo" src="../foto/logo.png" alt="Logo" />
     </div>
     <nav class="nav-links">
-      <a href="index.html">HOME</a>
-      <a href="about.html">ABOUT</a>
-      <a href="dashboard.html">DASHBOARD</a>
+      <a href="index.php">HOME</a>
+      <a href="about.php">ABOUT</a>
+
+      <?php if (isset($_SESSION['user'])): ?>
+        <?php
+          $role = $_SESSION['user']['role'];
+          switch ($role) {
+        case 'admin':
+        $link = "../admin/data_users/usersadmin.php";
+        break;
+        case 'guru':
+        $link = "../dashboard/guru/beranda/berandaguru.php";
+        break;
+       case 'siswa':
+        $link = "../dashboard/siswa/berandasis/berandasiswa.php";
+        break;
+       default:
+        $link = "../login/login.php";
+}
+
+        ?>
+        <a href="<?= $link ?>">DASHBOARD</a>
+      <?php else: ?>
+        <a href="../login/login.php">DASHBOARD</a>
+      <?php endif; ?>
+
       <a href="../login/login.php">LOGIN</a>
     </nav>
   </header>
+
 
   <!-- Hero Section 1 -->
   <section class="hero">
@@ -39,20 +66,12 @@
           <p>Jelajahi berita, wawasan, dan pengetahuan terkini dalam genggamanmu.</p>
         </div>
         <div class="btn-wrapper">
-          <a href="#" class="btndiv2">Mulai</a>
+          <a href="../login/login.php" class="btndiv2">Mulai</a>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- Hero Section 3 (cards) -->
-  <section class="hero3">
-    <div class="card-berita">
-      <div class="berita berita1">Berita 1</div>
-      <div class="berita berita2">Berita 2</div>
-      <div class="berita berita3">Berita 3</div>
-    </div>
-  </section>
+ 
 
 </body>
 </html>
